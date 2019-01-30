@@ -21,7 +21,7 @@ import {assertContext} from './WebGLUtils.js';
 
 const SKYSPHERE_SIZE = 10000;
 
-export default class EnvMapGenerator extends EventDispatcher {
+export default class EnvironmentMapGenerator extends EventDispatcher {
   constructor(renderer) {
     super();
     this.renderer = renderer;
@@ -66,5 +66,9 @@ export default class EnvMapGenerator extends EventDispatcher {
     this.camera.update(this.renderer, this.scene);
 
     return this.camera.renderTarget.texture;
+  }
+
+  dispose() {
+    this.camera.renderTarget.dispose();
   }
 }
