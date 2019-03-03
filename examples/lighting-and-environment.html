@@ -17,7 +17,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>&lt;model-viewer&gt; background-image</title>
+  <title>&lt;model-viewer&gt; Lighting &amp; Environment</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, user-scalable=no,
   minimum-scale=1.0, maximum-scale=1.0">
@@ -26,23 +26,22 @@
   <script src="../node_modules/resize-observer-polyfill/dist/ResizeObserver.js"></script>
 
   <!-- The following libraries and polyfills are recommended to maximize browser support -->
-  <!-- Include prismatic.js for Magic Leap support: -->
-  <!--<script src="../node_modules/@magicleap/prismatic/prismatic.min.js"></script>-->
 
-  <!-- Include the Custom Elements ES5 adapter shim if you are loading an IE11-compatible bundle -->
-  <!--<script src="../node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>-->
-
-  <!-- Web Components polyfill is required to support Edge and Firefox < 63: -->
+  <!-- 🚨 REQUIRED: Web Components polyfill to support Edge and Firefox < 63 -->
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-  <!-- Intersection Observer polyfill is required for Safari and IE11 -->
+  <!-- 💁 OPTIONAL: Intersection Observer polyfill for better performance in Safari and IE11 -->
   <script src="../node_modules/intersection-observer/intersection-observer.js"></script>
 
-  <!-- Resize Observer polyfill is optional, and improves resize behavior in non-Chrome browsers: -->
+  <!-- 💁 OPTIONAL: Resize Observer polyfill improves resize behavior in non-Chrome browsers -->
   <script src="../node_modules/resize-observer-polyfill/dist/ResizeObserver.js"></script>
 
-  <!-- Fullscreen polyfill is required for using experimental AR features in Canary: -->
+  <!-- 💁 OPTIONAL: Fullscreen polyfill is required for experimental AR features in Canary -->
   <script src="../node_modules/fullscreen-polyfill/dist/fullscreen.polyfill.js"></script>
+
+  <!-- 💁 OPTIONAL: Include prismatic.js for Magic Leap support -->
+  <!--<script src="../node_modules/@magicleap/prismatic/prismatic.min.js"></script>-->
+
 </head>
 <body class="multiple-samples">
 
@@ -52,7 +51,7 @@
   </div>
 
   <div class="center intro">
-    <h2>Background Image</h2>
+    <h2>Lighting &amp; Environment</h2>
     <h4>This page showcases the <span class="attribute">background-image</span> attribute, which links to an <a href="https://en.wikipedia.org/wiki/Equirectangular_projection">equirectangular projection</a> image which is used as the <a href="https://en.wikipedia.org/wiki/Skybox_(video_games)">skybox</a>, and applied as an environment map to the model.</h4>
   </div>
 
@@ -133,6 +132,148 @@
     </div>
   </div>
 
+
+  <div class="sample">
+    <div class="demo" id="demo-container-5"></div>
+    <div class="content">
+      <div class="wrapper">
+        <div class="index">5</div>
+        <h2>Use <span class="attribute">environment-image</span> to set an
+        environtal reflection without changing the background</h2>
+        <example-snippet stamp-to="demo-container-5" highlight-as="html">
+            <template>
+                <model-viewer controls
+                    background-color="#ff0077"
+                    environment-image="assets/whipple_creek_regional_park_04_1k.jpg"
+                    alt="A 3D model of a reflective sphere depicted within a forest"
+                    src="assets/reflective-sphere.gltf"></model-viewer>
+            </template>
+        </example-snippet>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample">
+    <div class="demo" id="demo-container-6"></div>
+    <div class="content">
+      <div class="wrapper">
+        <div class="index">6</div>
+        <h2>Supports different <span class="attribute">background-image</span> and <span class="attribute">environment-image</span> images</h2>
+        <example-snippet stamp-to="demo-container-6" highlight-as="html">
+            <template>
+                <model-viewer
+                    controls
+                    background-image="assets/whipple_creek_regional_park_04_1k.jpg"
+                    environment-image="assets/spruit_sunrise_2k.jpg"
+                    alt="A 3D model of a reflective sphere depicted within a forest"
+                    src="assets/reflective-sphere.gltf"></model-viewer>
+            </template>
+        </example-snippet>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample">
+    <div class="demo" id="demo-container-7"></div>
+    <div class="content">
+      <div class="wrapper">
+        <div class="index">7</div>
+        <h2>Control environment reflection intensity with <span class="attribute">environment-intensity</span></h2>
+        <example-snippet stamp-to="demo-container-7" highlight-as="html">
+            <template>
+              <model-viewer controls
+                    id="environment-intensity-demo"
+                    background-color="#ff0077"
+                    environment-image="assets/whipple_creek_regional_park_04_1k.jpg"
+                    alt="A 3D model of a reflective sphere depicted within a forest"
+                    src="assets/reflective-sphere.gltf"></model-viewer>
+<script>
+(() => {
+  const modelViewer = $('#environment-intensity-demo');
+  const time = performance.now();
+
+  const animate = (now) => {
+    modelViewer.environmentIntensity = oscillate(0, 6, 4000, now - time);
+    requestAnimationFrame(animate);
+  };
+
+  animate();
+})();
+</script>
+            </template>
+        </example-snippet>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sample">
+    <div class="demo" id="demo-container-8"></div>
+    <div class="content">
+      <div class="wrapper">
+        <div class="index">8</div>
+        <h2>Control stage lighting with <span class="attribute">stage-light-intensity</span></h2>
+        <example-snippet stamp-to="demo-container-8" highlight-as="html">
+            <template>
+                <model-viewer
+                    id="stage-light-demo"
+                    controls
+                    background-image="assets/whipple_creek_regional_park_04_1k.jpg"
+                    alt="A 3D model of an astronaut depicted within a forest"
+                    src="assets/Astronaut.glb"></model-viewer>
+<script>
+(() => {
+  const modelViewer = $('#stage-light-demo');
+  const time = performance.now();
+
+  const animate = (now) => {
+    modelViewer.stageLightIntensity = oscillate(0, 2, 4000, now - time);
+    requestAnimationFrame(animate);
+  };
+
+  animate();
+})();
+</script>
+            </template>
+        </example-snippet>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample">
+    <div class="demo" id="demo-container-9"></div>
+    <div class="content">
+      <div class="wrapper">
+        <div class="index">9</div>
+        <h2>Control shadow visibility with <span class="attribute">shadow-intensity</span></h2>
+        <example-snippet stamp-to="demo-container-9" highlight-as="html">
+            <template>
+              <model-viewer controls
+                    id="shadow-intensity-demo"
+                    background-color="#ff0077"
+                    environment-image="assets/whipple_creek_regional_park_04_1k.jpg"
+                    alt="A 3D model of a reflective sphere depicted within a forest"
+                    src="assets/reflective-sphere.gltf"></model-viewer>
+<script>
+(() => {
+  const modelViewer = $('#shadow-intensity-demo');
+  const time = performance.now();
+
+  const animate = (now) => {
+    modelViewer.shadowIntensity = oscillate(0, 2, 4000, now - time);
+    requestAnimationFrame(animate);
+  };
+
+  animate();
+})();
+</script>
+            </template>
+        </example-snippet>
+      </div>
+    </div>
+  </div>
+
+  <!--
   <div class="sample">
     <div class="demo" id="demo-container-5"></div>
     <div class="content">
@@ -158,6 +299,7 @@
       </div>
     </div>
   </div>
+  -->
 
   <div class="footer">
     <ul>
